@@ -1,4 +1,4 @@
-FROM kkpkishan/alpine:3.17.0
+FROM kkpkishan/alpine:nginx.1.22.1
 LABEL Kishan Khatrani <kkpkishan@gmail.com>
 # Add Production Dependencies
 RUN apk add --update --no-cache \
