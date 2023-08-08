@@ -84,7 +84,10 @@ rm values.yaml
 NODE_PORT=$(kubectl get --namespace neuvector -o jsonpath="{.spec.ports[0].nodePort}" services neuvector-service-webui)
 NODE_IP=$(kubectl get nodes --namespace neuvector -o jsonpath="{.items[0].status.addresses[0].address}")
 echo "Access NeuVector at: https://$NODE_IP:$NODE_PORT" >&3
-echo "Please wait 5 minutes, as the pod may take some time to run." >&3
+echo "Please wait 5 minutes, as the pods may take some time to run." >&3
+echo "You can access the application using the following credentials:" >&3
+echo "Username: admin" >&3
+echo "Password: admin" >&3
 
 # Create a temporary YAML file for the NeuVector REST API service
 temp_neuvector_service_yaml=$(mktemp)
