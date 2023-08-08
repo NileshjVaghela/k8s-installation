@@ -85,13 +85,11 @@ rm values.yaml
 # Get the NeuVector URL
 NODE_PORT=$(kubectl get --namespace neuvector -o jsonpath="{.spec.ports[0].nodePort}" services neuvector-service-webui)
 NODE_IP=$(kubectl get pods -n neuvector -l app=neuvector-manager-pod -o=jsonpath="{.items[*].status.hostIP}")
-exec 3>>/root/url-details.txt
 echo "Access NeuVector at: https://$NODE_IP:$NODE_PORT" >&3
 echo "Please wait 5 minutes, as the pods may take some time to run." >&3
 echo "You can access the application using the following credentials:" >&3
 echo "Username: admin" >&3
 echo "Password: admin" >&3
-exec 3>&-
 # Create a temporary YAML file for the NeuVector REST API service
 temp_neuvector_service_yaml=$(mktemp)
 cat <<EOL > $temp_neuvector_service_yaml
@@ -120,9 +118,7 @@ rm $temp_neuvector_service_yaml
 # Get the NodePort for the REST API service
 API_NODE_PORT=$(kubectl get --namespace neuvector -o jsonpath="{.spec.ports[0].nodePort}" services neuvector-service-rest)
 NODE_IP=$(kubectl get pods -n neuvector -l app=neuvector-manager-pod -o=jsonpath="{.items[*].status.hostIP}")
-exec 3>>/root/url-details.txt
 echo "Access API NeuVector at: https://$NODE_IP:$API_NODE_PORT" >&3
-exec 3>&-
 # Create a namespace for the sample application
 kubectl create namespace sample-app
 
@@ -198,9 +194,7 @@ SAMPLE_APP_NODE_PORT=$(kubectl get --namespace sample-app -o jsonpath="{.spec.po
 NODE_IP=$(kubectl get pods -n sample-app -l app=sample-linux-app -o=jsonpath="{.items[0].status.hostIP}")
 
 # Echo the URL to access the sample application
-exec 3>>/root/url-details.txt
 echo "Access the sample application at: http://$NODE_IP:$SAMPLE_APP_NODE_PORT" >&3
-exec 3>&-
 
 # Remove the temporary YAML files
 rm $temp_linux_deployment_yaml
