@@ -27,7 +27,7 @@ fi
 # Ask for node1 and node2 IP addresses
 read -p "Please enter Node1 IP address: " NODE1_IP >&3
 read -p "Please enter Node2 IP address: " NODE2_IP >&3
-
+echo "Please wait, installing cluster components..." >&3
 # Initialize Kubernetes
 kubeadm_output=$(kubeadm init --ignore-preflight-errors=all 2>&1)
 
@@ -61,6 +61,7 @@ chmod 700 get_helm.sh 2>&1
 # Remove the get_helm.sh file
 rm get_helm.sh
 
+echo "Please wait, installing NeuVector..." >&3
 
 # Download the YAML file
 curl -fsSL -o values.yaml https://raw.githubusercontent.com/neuvector/neuvector-helm/master/charts/core/values.yaml
