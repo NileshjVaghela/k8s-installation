@@ -48,8 +48,8 @@ join_command=$(echo "$kubeadm_output" | grep -A 1 "kubeadm join" | sed 'N;s/\\\n
 run_command_on_node() {
     sshpass -p 'student' ssh -o StrictHostKeyChecking=no ubuntu@$1  "sudo $2" 2>&1
 }
-# Run the join command on node1 and node2
-for ip in $NODE1_IP $NODE4_IP; do
+# Run the join command on node1 and node4
+for ip in $NODE1_IP $NODE2_IP $NODE3_IP $NODE4_IP; do
     run_command_on_node $ip "$join_command"
 done
 
