@@ -27,6 +27,8 @@ fi
 # Ask for node1 and node2 IP addresses
 read -p "Please enter Node1 IP address: " NODE1_IP >&3
 read -p "Please enter Node2 IP address: " NODE2_IP >&3
+read -p "Please enter Node3 IP address: " NODE3_IP >&3
+read -p "Please enter Node4 IP address: " NODE4_IP >&3
 echo "Please wait, installing cluster components..." >&3
 # Initialize Kubernetes
 kubeadm_output=$(kubeadm init --ignore-preflight-errors=all 2>&1)
@@ -47,7 +49,7 @@ run_command_on_node() {
     sshpass -p 'student' ssh -o StrictHostKeyChecking=no ubuntu@$1  "sudo $2" 2>&1
 }
 # Run the join command on node1 and node2
-for ip in $NODE1_IP $NODE2_IP; do
+for ip in $NODE1_IP $NODE4_IP; do
     run_command_on_node $ip "$join_command"
 done
 
