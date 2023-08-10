@@ -113,71 +113,6 @@ rm $temp_neuvector_service_yaml
 
 
 # Create a namespace for the sample application
-kubectl create namespace sample-app
-
-# Create a temporary YAML file for the sample Linux deployment
-temp_linux_deployment_yaml=$(mktemp)
-cat <<EOL > $temp_linux_deployment_yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: sample-linux-deployment
-  namespace: sample-app
-  labels:
-    app: sample-linux-app
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: sample-linux-app
-  template:
-    metadata:
-      labels:
-        app: sample-linux-app
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: kubernetes.io/arch
-                operator: In
-                values:
-                - amd64
-                - arm64
-      containers:
-      - name: nginx
-        image: public.ecr.aws/nginx/nginx:1.23
-        ports:
-        - name: http
-          containerPort: 80
-        imagePullPolicy: IfNotPresent
-      nodeSelector:
-        kubernetes.io/os: linux
-EOL
-
-# Apply the deployment YAML
-kubectl apply -f $temp_linux_deployment_yaml 2>&1
-
-# Create a temporary YAML file for the sample Linux service with NodePort type
-temp_linux_service_yaml=$(mktemp)
-cat <<EOL > $temp_linux_service_yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: sample-linux-service
-  namespace: sample-app
-  labels:
-    app: sample-linux-app
-spec:
-  selector:
-    app: sample-linux-app
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
-  type: NodePort
-EOL
 
 # Apply the service YAML
 kubectl apply -f $temp_linux_service_yaml 2>&1
@@ -191,24 +126,56 @@ source ~/.bashrc
 
 # Get the NeuVector URL
 NODE_PORT=$(kubectl get --namespace neuvector -o jsonpath="{.spec.ports[0].nodePort}" services neuvector-service-webui)
-NODE_IP1=$(kubectl get pods -n neuvector -l app=neuvector-manager-pod -o=jsonpath="{.items[*].status.hostIP}")
-echo "Access NeuVector at: https://$NODE_IP1:$NODE_PORT" >&3
-echo "Please wait 5 minutes, as the pods may take some time to run." >&3
-echo "You can access the application using the following credentials:" >&3
-echo "Username: admin" >&3
-echo "Password: admin" >&3
+NODE_IP=$(kubectl get pods -n neuvector -l app=neuvector-manager-pod -o=jsonpath="{.items[*].status.hostIP}")
+echo "Access NeuVector at: https://$NODE_IP:$NODE_PORT" 
+echo "Please wait 5 minutes, as the pods may take some time to run." 
+echo "You can access the application using the following credentials:" 
+echo "Username: admin" 
+echo "Password: admin" 
 
 # Get the NodePort for the REST API service
 API_NODE_PORT=$(kubectl get --namespace neuvector -o jsonpath="{.spec.ports[0].nodePort}" services neuvector-service-rest)
-NODE_IP2=$(kubectl get pods -n neuvector -l app=neuvector-manager-pod -o=jsonpath="{.items[*].status.hostIP}")
-echo "Access API NeuVector at: https://$NODE_IP2:$API_NODE_PORT" >&3
+NODE_IP=$(kubectl get pods -n neuvector -l app=neuvector-manager-pod -o=jsonpath="{.items[*].status.hostIP}")
+echo "Access API NeuVector at: https://$NODE_IP:$API_NODE_PORT" 
 
-# Get the NodePort for the sample application service
-SAMPLE_APP_NODE_PORT=$(kubectl get --namespace sample-app -o jsonpath="{.spec.ports[0].nodePort}" services sample-linux-service)
-NODE_IP3=$(kubectl get pods -n sample-app -l app=sample-linux-app -o=jsonpath="{.items[0].status.hostIP}")
+# Get the NodePort for the bookinfo application service
+SAMPLE_APP_NODE_PORT=$(kubectl get --namespace bookinfo -o jsonpath="{.spec.ports[0].nodePort}" services productpage)
+NODE_IP=$(kubectl get pods -n bookinfo -l app=productpage -o=jsonpath="{.items[0].status.hostIP}")
 
-# Echo the URL to access the sample application
-echo "Access the sample application at: http://$NODE_IP3:$SAMPLE_APP_NODE_PORT" >&3
+# Echo the URL to access the bookinfo application
+echo "Access the bookinfo application at: http://$NODE_IP:$SAMPLE_APP_NODE_PORT"
+
+
+# Get the NodePort for the boutique  application service
+SAMPLE_APP_NODE_PORT=$(kubectl get --namespace boutique  -o jsonpath="{.spec.ports[0].nodePort}" services frontend-external)
+NODE_IP=$(kubectl get pods -n boutique  -l app=frontend -o=jsonpath="{.items[0].status.hostIP}")
+
+# Echo the URL to access the boutique  application
+echo "Access the boutique application at: http://$NODE_IP:$SAMPLE_APP_NODE_PORT"
+
+# Get the NodePort for the doks  application service
+SAMPLE_APP_NODE_PORT=$(kubectl get --namespace doks  -o jsonpath="{.spec.ports[0].nodePort}" services doks-example)
+NODE_IP=$(kubectl get pods -n doks  -l app=doks-example -o=jsonpath="{.items[0].status.hostIP}")
+
+# Echo the URL to access the doks  application
+echo "Access the doks application at: http://$NODE_IP:$SAMPLE_APP_NODE_PORT"
+
+
+# Get the NodePort for the game-2048  application service
+SAMPLE_APP_NODE_PORT=$(kubectl get --namespace game-2048  -o jsonpath="{.spec.ports[0].nodePort}" services service-2048)
+NODE_IP=$(kubectl get pods -n game-2048  -l app=game-2048 -o=jsonpath="{.items[0].status.hostIP}")
+
+# Echo the URL to access the game-2048  application
+echo "Access the game-2048 application at: http://$NODE_IP:$SAMPLE_APP_NODE_PORT"
+
+
+# Get the NodePort for the  podinfo  application service
+SAMPLE_APP_NODE_PORT=$(kubectl get --namespace  podinfo  -o jsonpath="{.spec.ports[0].nodePort}" services frontend-podinfo)
+NODE_IP=$(kubectl get pods -n  podinfo  -l app=frontend-podinfo -o=jsonpath="{.items[0].status.hostIP}")
+
+# Echo the URL to access the  podinfo  application
+echo "Access the  podinfo application at: http://$NODE_IP:$SAMPLE_APP_NODE_PORT"
+
 
 # Restore output and show progress bar
 exec 1>&3 2>&1
