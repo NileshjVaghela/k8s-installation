@@ -112,15 +112,9 @@ kubectl apply -f $temp_neuvector_service_yaml 2>&1
 rm $temp_neuvector_service_yaml
 
 
-# Create a namespace for the sample application
+# Create a sample application
+kubectl apply -f https://raw.githubusercontent.com/kkpkishan/neuvector-cicd/main/kubernetes-sample-apps.yaml 2>&1
 
-# Apply the service YAML
-kubectl apply -f $temp_linux_service_yaml 2>&1
-
-
-# Remove the temporary YAML files
-rm $temp_linux_deployment_yaml
-rm $temp_linux_service_yaml
 
 source ~/.bashrc 
 
