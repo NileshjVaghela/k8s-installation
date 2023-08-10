@@ -55,7 +55,23 @@ done
 
 export KUBECONFIG=/etc/kubernetes/admin.conf
 
-sleep 15
+# Function to check if all nodes are in the Ready status
+all_nodes_ready() {
+  kubectl get nodes | grep -v STATUS | awk '{ if ($2 != "Ready") exit 1; }'
+  return $?
+}
+
+# Loop to keep checking until all nodes are Ready
+while true; do
+  all_nodes_ready
+  if [[ $? -eq 0 ]]; then
+    echo "All nodes are in Ready status."
+    break
+  else
+    echo "Waiting for all nodes to be in Ready status..."
+    sleep 5 # Wait for 5 seconds before checking again
+  fi
+done
 
 # Helm installation
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 2>&1
