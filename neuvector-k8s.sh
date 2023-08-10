@@ -139,18 +139,18 @@ source ~/.bashrc
 # Get the NeuVector URL
 NODE_PORT=$(kubectl get --namespace neuvector -o jsonpath="{.spec.ports[0].nodePort}" services neuvector-service-webui)
 NODE_IP=$(kubectl get pods -n neuvector -l app=neuvector-manager-pod -o=jsonpath="{.items[*].status.hostIP}")
-echo "Access NeuVector at: https://$NODE_IP:$NODE_PORT" 
-echo "Please wait 5 minutes, as the pods may take some time to run." 
-echo "You can access the application using the following credentials:" 
-echo "Username: admin" 
-echo "Password: admin" 
+echo "Access NeuVector at: https://$NODE_IP:$NODE_PORT" >&3
+echo "Please wait 5 minutes, as the pods may take some time to run."  >&3
+echo "You can access the application using the following credentials:"  >&3
+echo "Username: admin"  >&3
+echo "Password: admin" >&3
 
 sleep 1
 
 # Get the NodePort for the REST API service
-API_NODE_PORT=$(kubectl get --namespace neuvector -o jsonpath="{.spec.ports[0].nodePort}" services neuvector-service-rest)
+API_NODE_PORT=$(kubectl get --namespace neuvector -o jsonpath="{.spec.ports[0].nodePort}" services neuvector-service-rest) 
 NODE_IP=$(kubectl get pods -n neuvector -l app=neuvector-manager-pod -o=jsonpath="{.items[*].status.hostIP}")
-echo "Access API NeuVector at: https://$NODE_IP:$API_NODE_PORT" 
+echo "Access API NeuVector at: https://$NODE_IP:$API_NODE_PORT"  >&3
 
 sleep 1
 
@@ -159,7 +159,7 @@ SAMPLE_APP_NODE_PORT=$(kubectl get --namespace bookinfo -o jsonpath="{.spec.port
 NODE_IP=$(kubectl get pods -n bookinfo -l app=productpage -o=jsonpath="{.items[0].status.hostIP}")
 
 # Echo the URL to access the bookinfo application
-echo "Access the bookinfo application at: http://$NODE_IP:$SAMPLE_APP_NODE_PORT"
+echo "Access the bookinfo application at: http://$NODE_IP:$SAMPLE_APP_NODE_PORT"  >&3
 
 sleep 1
 
@@ -168,7 +168,7 @@ SAMPLE_APP_NODE_PORT=$(kubectl get --namespace boutique  -o jsonpath="{.spec.por
 NODE_IP=$(kubectl get pods -n boutique  -l app=frontend -o=jsonpath="{.items[0].status.hostIP}")
 
 # Echo the URL to access the boutique  application
-echo "Access the boutique application at: http://$NODE_IP:$SAMPLE_APP_NODE_PORT"
+echo "Access the boutique application at: http://$NODE_IP:$SAMPLE_APP_NODE_PORT" >&3
 
 sleep 1
 
@@ -177,16 +177,16 @@ SAMPLE_APP_NODE_PORT=$(kubectl get --namespace doks  -o jsonpath="{.spec.ports[0
 NODE_IP=$(kubectl get pods -n doks  -l app=doks-example -o=jsonpath="{.items[0].status.hostIP}")
 
 # Echo the URL to access the doks  application
-echo "Access the doks application at: http://$NODE_IP:$SAMPLE_APP_NODE_PORT"
+echo "Access the doks application at: http://$NODE_IP:$SAMPLE_APP_NODE_PORT" >&3
 
 sleep 1
 
 # Get the NodePort for the game-2048  application service
 SAMPLE_APP_NODE_PORT=$(kubectl get --namespace game-2048  -o jsonpath="{.spec.ports[0].nodePort}" services service-2048)
-NODE_IP=$(kubectl get pods -n game-2048  -l app=game-2048 -o=jsonpath="{.items[0].status.hostIP}")
+NODE_IP=$(kubectl get pods -n game-2048 -l app.kubernetes.io/name=app-2048 -o=jsonpath="{.items[0].status.hostIP}")
 
 # Echo the URL to access the game-2048  application
-echo "Access the game-2048 application at: http://$NODE_IP:$SAMPLE_APP_NODE_PORT"
+echo "Access the game-2048 application at: http://$NODE_IP:$SAMPLE_APP_NODE_PORT" >&3
 
 sleep 1
 
@@ -195,7 +195,7 @@ SAMPLE_APP_NODE_PORT=$(kubectl get --namespace  podinfo  -o jsonpath="{.spec.por
 NODE_IP=$(kubectl get pods -n  podinfo  -l app=frontend-podinfo -o=jsonpath="{.items[0].status.hostIP}")
 
 # Echo the URL to access the  podinfo  application
-echo "Access the  podinfo application at: http://$NODE_IP:$SAMPLE_APP_NODE_PORT"
+echo "Access the  podinfo application at: http://$NODE_IP:$SAMPLE_APP_NODE_PORT" >&3
 
 
 # Restore output and show progress bar
