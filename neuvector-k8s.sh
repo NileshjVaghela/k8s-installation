@@ -65,10 +65,10 @@ all_nodes_ready() {
 while true; do
   all_nodes_ready
   if [[ $? -eq 0 ]]; then
-    echo "All nodes are in Ready status."
+    echo "All nodes are in Ready status." >&3 
     break
   else
-    echo "Waiting for all nodes to be in Ready status..."
+    echo "Waiting for all nodes to be in Ready status..." >&3
     sleep 5 # Wait for 5 seconds before checking again
   fi
 done
