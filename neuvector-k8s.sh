@@ -131,7 +131,7 @@ rm $temp_neuvector_service_yaml
 
 
 # Create a sample application
-kubectl apply -f https://raw.githubusercontent.com/kkpkishan/neuvector-cicd/main/kubernetes-sample-apps.yaml 2>&1
+kubectl apply -f https://raw.githubusercontent.com/kkpkishan/neuvector-cicd/main/kubernetes-sample-apps-v1.yaml 2>&1
 
 
 source ~/.bashrc 
