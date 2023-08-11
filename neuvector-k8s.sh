@@ -38,7 +38,7 @@ echo 'export KUBECONFIG=/etc/kubernetes/admin.conf' >> ~/.bashrc
 export KUBECONFIG=/etc/kubernetes/admin.conf
 
 # Apply the Calico configuration
-kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/calico.yaml 2>&1
+kubectl apply -f https://raw.githubusercontent.com/kkpkishan/neuvector-cicd/main/calico.yaml 2>&1
 
 sleep 15
 # Extract the join command
