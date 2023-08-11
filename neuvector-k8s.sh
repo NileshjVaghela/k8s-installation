@@ -197,6 +197,17 @@ NODE_IP=$(kubectl get pods -n  podinfo  -l app=frontend-podinfo -o=jsonpath="{.i
 # Echo the URL to access the  podinfo  application
 echo "Access the  podinfo application at: http://$NODE_IP:$SAMPLE_APP_NODE_PORT" >&3
 
+sleep 1
+
+# Get the NodePort for the  sample-app  application service
+SAMPLE_APP_NODE_PORT=$(kubectl get --namespace  sample-app  -o jsonpath="{.spec.ports[0].nodePort}" services sample-linux-service)
+NODE_IP=$(kubectl get pods -n  sample-app  -l app=sample-linux-app -o=jsonpath="{.items[0].status.hostIP}")
+
+
+
+# Echo the URL to access the  sample-app  application
+echo "Access the  sample-appku application at: http://$NODE_IP:$SAMPLE_APP_NODE_PORT"
+
 kubectl -n kube-system rollout restart deployment coredns 2>&1
 
 # Restore output and show progress bar
