@@ -206,7 +206,7 @@ NODE_IP=$(kubectl get pods -n  sample-app  -l app=sample-linux-app -o=jsonpath="
 
 
 # Echo the URL to access the  sample-app  application
-echo "Access the  sample-appku application at: http://$NODE_IP:$SAMPLE_APP_NODE_PORT"
+echo "Access the  sample-appku application at: http://$NODE_IP:$SAMPLE_APP_NODE_PORT" >&3
 
 kubectl -n kube-system rollout restart deployment coredns 2>&1
 
